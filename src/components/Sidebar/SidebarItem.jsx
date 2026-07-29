@@ -9,8 +9,8 @@ function SidebarItem({
 			type="button"
 			onClick={onClick}
 			className={[
-				'flex w-full items-center gap-2.5 md:gap-3 rounded-lg px-2 py-2 md:px-3 md:py-2.5 text-left transition-colors',
-				'text-sm md:text-base',
+				'flex w-full items-center gap-2.5 lg:gap-3 rounded-lg px-2 py-2 lg:px-3 lg:py-2.5 text-left transition-colors',
+				'text-sm lg:text-base',
 				active
 					? 'bg-indigo-50 font-medium text-indigo-700'
 					: 'text-slate-600 hover:bg-slate-50 hover:text-slate-900',

@@ -1,57 +1,14 @@
 import { useState } from 'react';
 import {
 	Menu,
-	X,
-	BookOpen,
-	Boxes,
-	Braces,
-	Cpu,
-	Gauge,
-	Layers,
-	Wrench,
+	X
 } from 'lucide-react';
 
 import SidebarItem from './SidebarItem';
 
-const categories = [
-	{
-		id: 'all',
-		label: 'Все слова',
-		icon: BookOpen,
-	},
-	{
-		id: 'basics',
-		label: 'Базовые понятия',
-		icon: Braces,
-	},
-	{
-		id: 'state',
-		label: 'Состояние и данные',
-		icon: Layers,
-	},
-	{
-		id: 'hooks',
-		label: 'Хуки',
-		icon: Cpu,
-	},
-	{
-		id: 'components',
-		label: 'Компоненты и композиция',
-		icon: Boxes,
-	},
-	{
-		id: 'performance',
-		label: 'Производительность',
-		icon: Gauge,
-	},
-	{
-		id: 'technical',
-		label: 'Общетехническая лексика',
-		icon: Wrench,
-	},
-];
 
-function Sidebar({ selectedCategory, onCategorySelect }) {
+
+function Sidebar({ categories, selectedCategory, onCategorySelect }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -67,12 +24,12 @@ function Sidebar({ selectedCategory, onCategorySelect }) {
 			)}
 			</button>
 
-			<aside className={`fixed top-0 left-0 z-40 h-full w-[260px] md:w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out
+			<aside className={`fixed top-0 left-0 z-40 h-full w-[260px] lg:w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out
 				${isOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0 lg:static lg:shadow-none
         `}>
 				<div className="sticky top-0 flex h-screen flex-col">
-					<div className="hidden border-b border-slate-200 px-5 py-5 md:flex">
+					<div className="hidden border-b border-slate-200 px-5 py-5 lg:flex">
 						<div className="flex items-center gap-3">
 							<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white lg:flex">
 								&lt;/&gt;
@@ -90,7 +47,7 @@ function Sidebar({ selectedCategory, onCategorySelect }) {
 						</div>
 					</div>
 
-					<nav className="flex-1 overflow-y-auto px-3 py-5 mt-15 md:mt-0">
+					<nav className="flex-1 overflow-y-auto px-3 py-5 mt-15 lg:mt-0">
 						<p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
 							Categories
 						</p>
@@ -102,7 +59,9 @@ function Sidebar({ selectedCategory, onCategorySelect }) {
 									label={category.label}
 									icon={category.icon}
 									active={selectedCategory === category.id}
-									onClick={() => onCategorySelect(category.id)}
+									onClick={() => {
+										onCategorySelect(category.id);
+									}}
 								/>
 							))}
 						</div>
