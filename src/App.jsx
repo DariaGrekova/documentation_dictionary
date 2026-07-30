@@ -56,42 +56,42 @@ const mockWords = [
 		word: 'component',
 		transcription: '[kəmˈpoʊnənt]',
 		translation: 'компонент',
-		category: 'Базовые понятия',
+		category: 'basics',
 	},
 	{
 		id: 2,
 		word: 'render',
 		transcription: '[ˈrɛndər]',
 		translation: 'рендер / отрисовка',
-		category: 'Базовые понятия',
+		category: 'basics',
 	},
 	{
 		id: 3,
 		word: 'state',
 		transcription: '[steɪt]',
 		translation: 'состояние',
-		category: 'Состояние и данные',
+		category: 'state',
 	},
 	{
 		id: 4,
 		word: 'props',
 		transcription: '[prɑps]',
 		translation: 'пропсы / свойства',
-		category: 'Состояние и данные',
+		category: 'state',
 	},
 	{
 		id: 5,
 		word: 'useState',
 		transcription: '[juːz steɪt]',
 		translation: 'хук состояния',
-		category: 'Хуки',
+		category: 'hooks',
 	},
 	{
 		id: 6,
 		word: 'composition',
 		transcription: '[ˌkɑmpəˈzɪʃən]',
 		translation: 'композиция',
-		category: 'Компоненты и композиция',
+		category: 'components',
 	},
 ];
 
@@ -105,7 +105,7 @@ function App() {
 	const filteredWords = mockWords.filter(
 		(word) =>
 			selectedCategory === 'all' ||
-			word.category === selectedCategoryData.label
+			word.category === selectedCategory
 	);
 
 	return (
@@ -138,11 +138,12 @@ function App() {
 						<section>
 
 							<CategoryArea
-								category={selectedCategoryData} />
+								category={selectedCategoryData}
+								wordsCount={filteredWords.length} />
 
 							<WordGrid
 								words={filteredWords}
-
+								categories={categories}
 							/>
 						</section>
 					</div>

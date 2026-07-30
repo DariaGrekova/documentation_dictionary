@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 
-function WordCard({ word }) {
+function WordCard({ word, category }) {
 	return (
 		<button
 			type="button"
@@ -60,7 +60,7 @@ function WordCard({ word }) {
           font-medium
           text-slate-500
         ">
-					{word.category}
+					{category.label}
 				</span>
 			</div>
 		</button>
