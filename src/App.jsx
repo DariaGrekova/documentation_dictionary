@@ -10,13 +10,10 @@ import Sidebar from './components/Sidebar/Sidebar';
 import CategoryArea from './components/CategoryArea/CategoryArea';
 import WordGrid from './components/WordGrid/WordGrid';
 
-
-
-
 function App() {
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [isOpen, setIsOpen] = useState(false);
-	const toggleSidebar = () => setIsOpen(!isOpen);
+	const toggleSidebar = () => setIsOpen(prev => !prev);
 
 
 	const selectedCategoryData = categories.find(

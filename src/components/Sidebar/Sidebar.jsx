@@ -1,13 +1,9 @@
 import SidebarItem from './SidebarItem';
 
-
-
 function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClose }) {
 
 	return (
-		<div className="relative min-h-screen bg-gray-100 flex">
-
-
+		<>
 			<aside className={`fixed top-0 left-0 z-40 h-full w-[260px] lg:w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out
 				${isOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0 lg:static lg:shadow-none
@@ -59,7 +55,7 @@ function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClo
 					onClick={onClose}
 				/>
 			)}
-		</div>
+		</>
 	);
 }
 
