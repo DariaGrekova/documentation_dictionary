@@ -1,28 +1,12 @@
-import { useState } from 'react';
-import {
-	Menu,
-	X
-} from 'lucide-react';
-
 import SidebarItem from './SidebarItem';
 
 
 
-function Sidebar({ categories, selectedCategory, onCategorySelect }) {
-	const [isOpen, setIsOpen] = useState(false);
-	const toggleSidebar = () => setIsOpen(!isOpen);
+function Sidebar({ categories, selectedCategory, onCategorySelect, toggleSidebar, isOpen, onClose }) {
 
 	return (
 		<div className="relative min-h-screen bg-gray-100 flex">
-			<button
-				onClick={toggleSidebar}
-				className="fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md lg:hidden hover:bg-gray-50 transition-colors"
-			>{isOpen ? (
-				<X size={20} className="w-6 h-6 text-gray-800" />
-			) : (
-				<Menu size={20} className="w-6 h-6 text-gray-800" />
-			)}
-			</button>
+
 
 			<aside className={`fixed top-0 left-0 z-40 h-full w-[260px] lg:w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out
 				${isOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -47,7 +31,7 @@ function Sidebar({ categories, selectedCategory, onCategorySelect }) {
 						</div>
 					</div>
 
-					<nav className="flex-1 overflow-y-auto px-3 py-5 mt-15 lg:mt-0">
+					<nav className="flex-1 overflow-y-auto px-3 py-5 mt-14 lg:mt-0">
 						<p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
 							Categories
 						</p>
@@ -61,6 +45,7 @@ function Sidebar({ categories, selectedCategory, onCategorySelect }) {
 									active={selectedCategory === category.id}
 									onClick={() => {
 										onCategorySelect(category.id);
+										onClose()
 									}}
 								/>
 							))}
