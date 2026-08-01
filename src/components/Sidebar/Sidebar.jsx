@@ -2,7 +2,7 @@ import SidebarItem from './SidebarItem';
 
 
 
-function Sidebar({ categories, selectedCategory, onCategorySelect, toggleSidebar, isOpen, onClose }) {
+function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClose }) {
 
 	return (
 		<div className="relative min-h-screen bg-gray-100 flex">
@@ -56,7 +56,7 @@ function Sidebar({ categories, selectedCategory, onCategorySelect, toggleSidebar
 			{isOpen && (
 				<div
 					className="fixed inset-0 z-30 bg-black/40 lg:hidden"
-					onClick={toggleSidebar}
+					onClick={onClose}
 				/>
 			)}
 		</div>

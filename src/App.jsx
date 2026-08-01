@@ -36,7 +36,6 @@ function App() {
 					categories={categories}
 					selectedCategory={selectedCategory}
 					onCategorySelect={setSelectedCategory}
-					toggleSidebar={toggleSidebar}
 					onClose={toggleSidebar}
 					isOpen={isOpen}
 				/>
