@@ -40,10 +40,10 @@ function App() {
 				<main className="min-w-0 flex-1">
 					<div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 						<header className="mb-8">
-							<div className="mb-6 flex flex-col items-start">
+							<div className="mb-6 flex lg:flex-col items-center justify-between  lg:items-start ">
 								<button
 									onClick={toggleSidebar}
-									className="relative z-50 mb-5
+									className="relative z-50
 														flex h-10 w-10 items-center justify-center
 														rounded-lg
 														border border-slate-200
@@ -65,21 +65,21 @@ function App() {
 										<Menu size={21} strokeWidth={1.8} />
 									)}
 								</button>
-								<div>
+								<p className="mb-1 text-sm font-medium text-indigo-600">
+									React Dictionary
+								</p>
+								<div className='hidden lg:block'>
 
-									<p className="mb-1 text-sm font-medium text-indigo-600">
-										React Dictionary
-									</p>
 
 									<h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
 										React English Dictionary
 									</h1>
 
+									<p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+										Англо-русский словарь для изучения React и чтения технической
+										документации.
+									</p>
 								</div>
-								<p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-									Англо-русский словарь для изучения React и чтения технической
-									документации.
-								</p>
 							</div>
 						</header>
 						<section>

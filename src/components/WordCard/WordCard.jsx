@@ -8,14 +8,15 @@ function WordCard({ word, category }) {
         group
         relative
         flex
-        min-h-40
+        min-h-20
+				lg:min-h-40
         w-full
         flex-col
         rounded-xl
         border
         border-slate-200
         bg-white
-        p-5
+        p-3 lg:p-5
         text-left
         shadow-sm
         transition-all
@@ -30,7 +31,7 @@ function WordCard({ word, category }) {
 		>
 			<div className="flex items-start justify-between gap-4">
 				<div>
-					<h3 className="text-lg font-semibold text-slate-900">
+					<h3 className="text-md lg:text-lg font-semibold text-slate-900">
 						{word.word}
 					</h3>
 
@@ -49,12 +50,12 @@ function WordCard({ word, category }) {
 				/>
 			</div>
 
-			<div className="mt-auto pt-6">
+			<div className="mt-auto pt-4">
 				<span className="
           inline-flex
           rounded-md
           bg-slate-100
-          px-2.5
+          px-1.5
           py-1
           text-xs
           font-medium

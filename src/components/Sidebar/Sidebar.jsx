@@ -27,7 +27,7 @@ function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClo
 						</div>
 					</div>
 
-					<nav className="flex-1 overflow-y-auto px-3 py-5 mt-14 lg:mt-0">
+					<nav className="flex-1 overflow-y-auto px-3 py-5 mt-16 lg:mt-0">
 						<p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
 							Categories
 						</p>
