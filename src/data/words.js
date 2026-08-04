@@ -4,6 +4,10 @@ export const words = [
 		word: 'component',
 		transcription: '[kəmˈpoʊnənt]',
 		translation: 'компонент',
+		example: {
+			en: "Note that Strict Mode invokes effects twice in development.",
+			ru: "Обратите внимание, что Strict Mode вызывает effects дважды в development."
+		},
 		category: 'basics',
 	},
 	{
@@ -12,6 +16,10 @@ export const words = [
 		transcription: '[ˈrɛndər]',
 		translation: 'рендер / отрисовка',
 		category: 'basics',
+		example: {
+			en: "2 Note that Strict Mode invokes effects twice in development.",
+			ru: "2 Обратите внимание, что Strict Mode вызывает effects дважды в development."
+		},
 	},
 	{
 		id: 3,

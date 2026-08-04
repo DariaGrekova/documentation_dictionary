@@ -9,12 +9,13 @@ import {
 import Sidebar from './components/Sidebar/Sidebar';
 import CategoryArea from './components/CategoryArea/CategoryArea';
 import WordGrid from './components/WordGrid/WordGrid';
+import WordModal from './components/WordModal/WordModal';
 
 function App() {
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleSidebar = () => setIsOpen(prev => !prev);
-
+	const [selectedWord, setSelectedWord] = useState(null);
 
 	const selectedCategoryData = categories.find(
 		(category) => category.id === selectedCategory
@@ -91,6 +92,12 @@ function App() {
 							<WordGrid
 								words={filteredWords}
 								categories={categories}
+								onWordClick={setSelectedWord}
+							/>
+
+							<WordModal
+								word={selectedWord}
+								onClose={() => setSelectedWord(null)}
 							/>
 						</section>
 					</div>

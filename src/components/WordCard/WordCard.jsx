@@ -1,9 +1,10 @@
 import { ArrowUpRight } from 'lucide-react';
 
-function WordCard({ word, category }) {
+function WordCard({ word, category, onClick }) {
 	return (
 		<button
 			type="button"
+			onClick={onClick}
 			className="
         group
         relative

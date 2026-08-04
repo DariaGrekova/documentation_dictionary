@@ -1,6 +1,6 @@
 import WordCard from '../WordCard/WordCard';
 
-function WordGrid({ words, categories }) {
+function WordGrid({ words, categories, onWordClick }) {
 
 
 	return (
@@ -17,6 +17,7 @@ function WordGrid({ words, categories }) {
 							key={word.id}
 							word={word}
 							category={category}
+							onClick={() => onWordClick(word)}
 						/>
 					)
 				})
