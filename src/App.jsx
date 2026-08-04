@@ -92,13 +92,17 @@ function App() {
 							<WordGrid
 								words={filteredWords}
 								categories={categories}
-								onWordClick={setSelectedWord}
+								onWordClick={(word) => {
+									setSelectedWord(word);
+								}}
 							/>
 
-							<WordModal
-								word={selectedWord}
-								onClose={() => setSelectedWord(null)}
-							/>
+							{selectedWord && (
+								<WordModal
+									word={selectedWord}
+									onClose={() => setSelectedWord(null)}
+								/>
+							)}
 						</section>
 					</div>
 				</main>
