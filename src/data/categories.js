@@ -4,8 +4,13 @@ import {
 	Braces,
 	Cpu,
 	Gauge,
+	ArrowRightLeft,
+	Code2,
 	Layers,
+	Sparkles,
+	Zap,
 	Wrench,
+	Blocks
 } from 'lucide-react';
 
 export const categories = [
@@ -25,6 +30,16 @@ export const categories = [
 		icon: Layers,
 	},
 	{
+		id: 'props',
+		label: 'Пропсы и передача данных',
+		icon: ArrowRightLeft,
+	},
+	{
+		id: 'conditional',
+		label: 'Условный рендер и списки',
+		icon: Code2,
+	},
+	{
 		id: 'hooks',
 		label: 'Хуки',
 		icon: Cpu,
@@ -33,6 +48,21 @@ export const categories = [
 		id: 'components',
 		label: 'Компоненты и композиция',
 		icon: Boxes,
+	},
+	{
+		id: 'architecture',
+		label: 'Архитектура и концепции',
+		icon: Layers,
+	},
+	{
+		id: 'react19',
+		label: 'React 19',
+		icon: Sparkles,
+	},
+	{
+		id: 'dev',
+		label: 'Разработка и отладка',
+		icon: Zap,
 	},
 	{
 		id: 'performance',
@@ -44,5 +74,10 @@ export const categories = [
 		label: 'Общетехническая лексика',
 		icon: Wrench,
 	},
+	{
+		id: 'modal',
+		label: 'Оценочные и модальные слова',
+		icon: Blocks,
+	}
 ];
 
