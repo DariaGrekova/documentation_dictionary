@@ -1,9 +1,41 @@
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+
+const slides = ['example', 'translation'];
 
 function WordModal({ word, onClose }) {
-	const slides = ['example', 'translation'];
 	const [currentSlide, setCurrentSlide] = useState(slides[0]);
+	const touchStartX = useRef(null);
+	const touchEndX = useRef(null);
+
+	useEffect(() => {
+		const scrollY = window.scrollY;
+
+		document.body.style.position = 'fixed';
+		document.body.style.top = `-${scrollY}px`;
+		document.body.style.width = '100%';
+
+		return () => {
+			document.body.style.position = '';
+			document.body.style.top = '';
+			document.body.style.width = '';
+			window.scrollTo(0, scrollY);
+		};
+	}, []);
+
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === 'Escape') {
+				onClose();
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [onClose]);
 
 	if (!word) {
 		return null;
@@ -23,6 +55,33 @@ function WordModal({ word, onClose }) {
 		}
 	};
 
+	const handleTouchStart = (e) => {
+		touchStartX.current = e.targetTouches[0].clientX;
+	};
+
+	const handleTouchMove = (e) => {
+		touchEndX.current = e.targetTouches[0].clientX;
+	};
+
+	const handleTouchEnd = () => {
+		if (touchStartX.current === null || touchEndX.current === null) {
+			return;
+		}
+
+		const distance = touchStartX.current - touchEndX.current;
+
+		if (distance > 50) {
+			goToNextSlide();
+		}
+
+		if (distance < -50) {
+			goToPrevSlide();
+		}
+
+		touchStartX.current = null;
+		touchEndX.current = null;
+	};
+
 	return (
 		<div
 			className="
@@ -36,6 +95,7 @@ function WordModal({ word, onClose }) {
         p-4
         backdrop-blur-sm
       "
+			onClick={onClose}
 		>
 			<div
 				className="
@@ -47,6 +107,7 @@ function WordModal({ word, onClose }) {
           bg-white
           shadow-2xl
         "
+				onClick={(event) => event.stopPropagation()}
 			>
 				<button
 					type="button"
@@ -97,11 +158,15 @@ function WordModal({ word, onClose }) {
 						))}
 					</div>
 
-					<div className="min-h-64">
+					<div
+						className="min-h-64"
+						onTouchStart={handleTouchStart}
+						onTouchMove={handleTouchMove}
+						onTouchEnd={handleTouchEnd}>
 
 						{currentSlide === 'example' ? (
 							<>
-								<p className="mb-2 text-s font-semibold uppercase tracking-wider text-indigo-600">
+								<p className="mb-2 text-sm font-semibold uppercase tracking-wider text-indigo-600">
 									EN
 								</p>
 
@@ -111,7 +176,7 @@ function WordModal({ word, onClose }) {
 							</>
 						) : (
 							<>
-								<p className="mb-2 text-s font-semibold uppercase tracking-wider text-indigo-600">
+								<p className="mb-2 text-sm font-semibold uppercase tracking-wider text-indigo-600">
 									RU
 								</p>
 
@@ -119,16 +184,13 @@ function WordModal({ word, onClose }) {
 									{word.translation}
 								</h2>
 
-								<p className="text-s lg:text-lg text-slate-600">
+								<p className="text-sm lg:text-lg text-slate-600">
 									{word.example?.ru}
 								</p>
 							</>
 						)}
 					</div>
 				</div>
-
-
-
 
 				<div className="flex items-center justify-between border-t border-slate-200 px-6 py-4 sm:px-8">
 					<button
