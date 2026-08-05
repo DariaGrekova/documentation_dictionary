@@ -38,7 +38,7 @@ function App() {
 					isOpen={isOpen}
 				/>
 
-				<main className="min-w-0 flex-1">
+				<main className="min-w-0 flex-1 lg:ml-64">
 					<div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 						<header className="mb-8">
 							<div className="mb-6 flex lg:flex-col items-center justify-between  lg:items-start ">
