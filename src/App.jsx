@@ -1,7 +1,7 @@
 import './App.css';
 import { categories } from './data/categories';
-import { words } from './data/words';
-import { useState } from 'react';
+// import { words } from './data/words';
+import { useState, useEffect } from 'react';
 import {
 	Menu,
 	X
@@ -12,10 +12,56 @@ import WordGrid from './components/WordGrid/WordGrid';
 import WordModal from './components/WordModal/WordModal';
 
 function App() {
+	const [words, setWords] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleSidebar = () => setIsOpen(prev => !prev);
 	const [selectedWord, setSelectedWord] = useState(null);
+
+	const getWords = async () => {
+		const response = await fetch(
+			'https://raw.githubusercontent.com/DariaGrekova/db_projects/refs/heads/main/words.json'
+		);
+
+		if (!response.ok) {
+			throw new Error('Данные были получены с ошибкой!');
+		}
+
+		return response.json();
+	};
+
+	useEffect(() => {
+		getWords()
+			.then((data) => {
+				setWords(data);
+			})
+			.catch((error) => {
+				console.error(error.message);
+				setError(error.message);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}, []);
+
+	const handleRetry = () => {
+		setError(null);
+		setLoading(true);
+
+		getWords()
+			.then((data) => {
+				setWords(data);
+			})
+			.catch((error) => {
+				console.error(error.message);
+				setError(error.message);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	};
 
 	const selectedCategoryData = categories.find(
 		(category) => category.id === selectedCategory
@@ -89,13 +135,29 @@ function App() {
 								category={selectedCategoryData}
 								wordsCount={filteredWords.length} />
 
-							<WordGrid
-								words={filteredWords}
-								categories={categories}
-								onWordClick={(word) => {
-									setSelectedWord(word);
-								}}
-							/>
+							{error ? (
+								<div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-6 text-center">
+									<p className="text-red-600 font-medium">Ошибка загрузки</p>
+									<p className="mt-1 text-sm text-red-500">{error}</p>
+									<button
+										onClick={handleRetry}
+										className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
+									>
+										Попробовать снова
+									</button>
+								</div>
+							) : loading ? (
+								<div className="mt-8 flex justify-center py-12">
+									<div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
+									<p className="ml-3 text-sm text-slate-500">Идет загрузка слов...</p>
+								</div>
+							) : (
+								<WordGrid
+									words={filteredWords}
+									categories={categories}
+									onWordClick={(word) => setSelectedWord(word)}
+								/>
+							)}
 
 							{selectedWord && (
 								<WordModal
