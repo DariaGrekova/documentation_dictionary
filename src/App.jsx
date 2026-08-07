@@ -12,12 +12,14 @@ import WordModal from './components/WordModal/WordModal';
 
 function App() {
 	const [words, setWords] = useState([]);
+	const [visibleBatches, setVisibleBatches] = useState({ all: 1 });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleSidebar = () => setIsOpen(prev => !prev);
 	const [selectedWord, setSelectedWord] = useState(null);
+	const WORDS_PER_BATCH = 18;
 
 	const getWords = async () => {
 		const response = await fetch(
@@ -25,19 +27,19 @@ function App() {
 		);
 
 		if (!response.ok) {
-			throw new Error('Данные были получены с ошибкой!');
+			throw new Error('Не удалось загрузить словарь');
 		}
 
 		return response.json();
 	};
 
-	const loadWords = () => {
+	const fetchWords = () => {
 		getWords()
 			.then((data) => {
 				setWords(data);
 			})
 			.catch((error) => {
-				console.error(error.message);
+				console.error(error);
 				setError(error.message);
 			})
 			.finally(() => {
@@ -46,18 +48,21 @@ function App() {
 	};
 
 	useEffect(() => {
-		loadWords();
+		fetchWords();
 	}, []);
+
+	const handleCategorySelect = (category) => {
+		setSelectedCategory(category);
+		setIsOpen(false);
+
+		window.scrollTo(0, 0);
+	};
 
 	const handleRetry = () => {
 		setError(null);
 		setLoading(true);
-		loadWords();
+		fetchWords();
 	};
-
-	const selectedCategoryData = categories.find(
-		(category) => category.id === selectedCategory
-	);
 
 	const filteredWords = words.filter(
 		(word) =>
@@ -65,13 +70,29 @@ function App() {
 			word.category === selectedCategory
 	);
 
+	const currentBatch = visibleBatches[selectedCategory] || 1;
+	const displayedWords = filteredWords.slice(0, WORDS_PER_BATCH * currentBatch);
+
+	const shouldShowButton = filteredWords.length > displayedWords.length;
+
+	const selectedCategoryData = categories.find(
+		(category) => category.id === selectedCategory
+	);
+
+	const handleAddMore = () => {
+		setVisibleBatches(prev => ({
+			...prev,
+			[selectedCategory]: (prev[selectedCategory] || 1) + 1
+		}));
+	};
+
 	return (
 		<div className="min-h-screen bg-slate-50 text-slate-900">
 			<div className="flex min-h-screen">
 				<Sidebar
 					categories={categories}
 					selectedCategory={selectedCategory}
-					onCategorySelect={setSelectedCategory}
+					onCategorySelect={handleCategorySelect}
 					onClose={toggleSidebar}
 					isOpen={isOpen}
 				/>
@@ -82,6 +103,7 @@ function App() {
 							<div className="mb-6 flex lg:flex-col items-center justify-between  lg:items-start ">
 								<button
 									onClick={toggleSidebar}
+									type="button"
 									className="relative z-50
 														flex h-10 w-10 items-center justify-center
 														rounded-lg
@@ -129,8 +151,8 @@ function App() {
 
 							{error ? (
 								<div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-6 text-center">
-									<p className="text-red-600 font-medium">Ошибка загрузки</p>
-									<p className="mt-1 text-sm text-red-500">{error}</p>
+									<p className="text-red-600 font-medium">Не удалось загрузить словарь.</p>
+									<p className="mt-1 text-sm text-red-500">Попробуйте ещё раз.</p>
 									<button
 										onClick={handleRetry}
 										className="mt-4 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition-colors"
@@ -145,9 +167,11 @@ function App() {
 								</div>
 							) : (
 								<WordGrid
-									words={filteredWords}
+									words={displayedWords}
 									categories={categories}
 									onWordClick={(word) => setSelectedWord(word)}
+									shouldShowButton={shouldShowButton}
+									handleAddMore={handleAddMore}
 								/>
 							)}
 
