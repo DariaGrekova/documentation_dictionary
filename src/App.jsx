@@ -1,6 +1,5 @@
 import './App.css';
 import { categories } from './data/categories';
-// import { words } from './data/words';
 import { useState, useEffect } from 'react';
 import {
 	Menu,
@@ -22,7 +21,7 @@ function App() {
 
 	const getWords = async () => {
 		const response = await fetch(
-			'https://raw.githubusercontent.com/DariaGrekova/db_projects/refs/heads/main/words.json'
+			'https://raw.githubusercontent.com/DariaGrekova/remote_data/refs/heads/main/dictonary/words.json'
 		);
 
 		if (!response.ok) {
@@ -32,7 +31,7 @@ function App() {
 		return response.json();
 	};
 
-	useEffect(() => {
+	const loadWords = () => {
 		getWords()
 			.then((data) => {
 				setWords(data);
@@ -44,23 +43,16 @@ function App() {
 			.finally(() => {
 				setLoading(false);
 			});
+	};
+
+	useEffect(() => {
+		loadWords();
 	}, []);
 
 	const handleRetry = () => {
 		setError(null);
 		setLoading(true);
-
-		getWords()
-			.then((data) => {
-				setWords(data);
-			})
-			.catch((error) => {
-				console.error(error.message);
-				setError(error.message);
-			})
-			.finally(() => {
-				setLoading(false);
-			});
+		loadWords();
 	};
 
 	const selectedCategoryData = categories.find(
