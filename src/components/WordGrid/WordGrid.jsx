@@ -1,6 +1,30 @@
+import { useRef, useEffect } from 'react';
 import WordCard from '../WordCard/WordCard';
 
-function WordGrid({ words, categories, onWordClick, shouldShowButton, handleAddMore }) {
+function WordGrid({ words, categories, onWordClick, hasMoreWords, handleAddMore }) {
+	const sentinelRef = useRef(null);
+
+
+	useEffect(() => {
+		if (!hasMoreWords) return;
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					handleAddMore();
+				}
+			},
+			{
+				rootMargin: '0px 0px 150px 0px',
+				threshold: 1,
+			}
+		);
+
+		if (sentinelRef.current) {
+			observer.observe(sentinelRef.current);
+		}
+
+		return () => observer.disconnect();
+	}, [hasMoreWords, handleAddMore]);
 
 	const categoriesById = Object.fromEntries(
 		categories.map((category) => [category.id, category])
@@ -25,25 +49,11 @@ function WordGrid({ words, categories, onWordClick, shouldShowButton, handleAddM
 				}
 
 			</div>
-			{shouldShowButton && (
-				<div className='flex justify-end mt-6'>
-					<button
-						type="button"
-						className="flex
-              h-10
-              items-center
-              gap-2
-              rounded-lg
-              px-3
-              text-sm
-              font-medium
-              transition-colors
-							text-white bg-indigo-600 hover:bg-indigo-700"
-						onClick={handleAddMore}
-					>
-						Показать ещё
-					</button>
-				</div>
+			{hasMoreWords && (
+				<div
+					ref={sentinelRef}
+					className="mt-6 h-10 w-full"
+				/>
 			)}
 		</>
 	);

@@ -19,7 +19,7 @@ function App() {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleSidebar = () => setIsOpen(prev => !prev);
 	const [selectedWord, setSelectedWord] = useState(null);
-	const WORDS_PER_BATCH = 18;
+	const WORDS_PER_BATCH = 6;
 
 	const getWords = async () => {
 		const response = await fetch(
@@ -73,7 +73,7 @@ function App() {
 	const currentBatch = visibleBatches[selectedCategory] || 1;
 	const displayedWords = filteredWords.slice(0, WORDS_PER_BATCH * currentBatch);
 
-	const shouldShowButton = filteredWords.length > displayedWords.length;
+	const hasMoreWords = filteredWords.length > displayedWords.length;
 
 	const selectedCategoryData = categories.find(
 		(category) => category.id === selectedCategory
@@ -170,7 +170,7 @@ function App() {
 									words={displayedWords}
 									categories={categories}
 									onWordClick={(word) => setSelectedWord(word)}
-									shouldShowButton={shouldShowButton}
+									hasMoreWords={hasMoreWords}
 									handleAddMore={handleAddMore}
 								/>
 							)}
