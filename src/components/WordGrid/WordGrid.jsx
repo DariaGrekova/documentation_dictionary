@@ -14,8 +14,8 @@ function WordGrid({ words, categories, onWordClick, hasMoreWords, handleAddMore 
 				}
 			},
 			{
-				rootMargin: '0px 0px 150px 0px',
-				threshold: 1,
+				rootMargin: '0px 0px 200px 0px',
+				threshold: 0,
 			}
 		);
 

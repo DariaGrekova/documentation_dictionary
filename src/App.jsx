@@ -3,7 +3,8 @@ import { categories } from './data/categories';
 import { useState, useEffect } from 'react';
 import {
 	Menu,
-	X
+	X,
+	ArrowUp
 } from 'lucide-react';
 import Sidebar from './components/Sidebar/Sidebar';
 import CategoryArea from './components/CategoryArea/CategoryArea';
@@ -20,6 +21,7 @@ function App() {
 	const toggleSidebar = () => setIsOpen(prev => !prev);
 	const [selectedWord, setSelectedWord] = useState(null);
 	const WORDS_PER_BATCH = 6;
+	const [isVisibleButtonUp, setIsVisibleButtonUp] = useState(false);
 
 	const getWords = async () => {
 		const response = await fetch(
@@ -51,6 +53,18 @@ function App() {
 		fetchWords();
 	}, []);
 
+	useEffect(() => {
+		const handleScroll = () => {
+			setIsVisibleButtonUp(window.scrollY > 400)
+		};
+
+		window.addEventListener('scroll', handleScroll)
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		}
+	}, []);
+
 	const handleCategorySelect = (category) => {
 		setSelectedCategory(category);
 		setIsOpen(false);
@@ -62,6 +76,13 @@ function App() {
 		setError(null);
 		setLoading(true);
 		fetchWords();
+	};
+
+	const pageUp = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
 	};
 
 	const filteredWords = words.filter(
@@ -183,6 +204,31 @@ function App() {
 							)}
 						</section>
 					</div>
+
+					{isVisibleButtonUp && (
+						<button
+							type='button'
+							className='fixed 
+							bottom-5
+							right-3
+							flex
+              h-11
+              items-center
+              gap-2
+              rounded-full
+              px-3
+              text-sm
+              font-medium
+              transition-colors
+							text-white
+							bg-indigo-400/50
+							hover:bg-indigo-600
+							transparent-0.5'
+							onClick={pageUp}
+						>
+							<ArrowUp size={21} strokeWidth={1.8} />
+						</button>
+					)}
 				</main>
 			</div>
 		</div>
