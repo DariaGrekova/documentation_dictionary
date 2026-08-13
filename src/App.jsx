@@ -21,7 +21,7 @@ function App() {
 	const toggleSidebar = () => setIsOpen(prev => !prev);
 	const [selectedWord, setSelectedWord] = useState(null);
 	const WORDS_PER_BATCH = 6;
-	const [isVisibleButtonUp, setIsVisibleButtonUp] = useState(false);
+	const [showScrollToTop, setShowScrollToTop] = useState(false);
 
 	const getWords = async () => {
 		const response = await fetch(
@@ -55,7 +55,7 @@ function App() {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			setIsVisibleButtonUp(window.scrollY > 400)
+			setShowScrollToTop(window.scrollY > 400)
 		};
 
 		window.addEventListener('scroll', handleScroll)
@@ -121,24 +121,32 @@ function App() {
 				<main className="min-w-0 flex-1 lg:ml-64">
 					<div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 						<header className="mb-8">
-							<div className="mb-6 flex lg:flex-col items-center justify-between  lg:items-start ">
+							<div
+								className="
+									fixed inset-x-0 top-0 z-50
+									flex h-14 items-center 
+									border-b border-slate-200/80
+									bg-white/90
+									px-4
+									shadow-sm
+									backdrop-blur-md
+									lg:hidden
+								"
+							>
 								<button
 									onClick={toggleSidebar}
 									type="button"
-									className="relative z-50
-														flex h-10 w-10 items-center justify-center
-														rounded-lg
-														border border-slate-200
-														bg-white
-														text-indigo-500
-														shadow-sm
-														transition-all duration-200
-														hover:border-indigo-200
-														hover:bg-indigo-50
-														hover:text-indigo-600
-														focus:outline-none
-														focus:ring-1 focus:ring-indigo-500/30
-														lg:hidden"
+									className="
+										flex h-9 w-9 shrink-0
+										items-center justify-center
+										rounded-lg
+										text-indigo-600
+										transition-colors
+										hover:bg-indigo-50
+										focus:outline-none
+										focus:ring-2
+										focus:ring-indigo-500/30
+									"
 									aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
 								>
 									{isOpen ? (
@@ -147,11 +155,22 @@ function App() {
 										<Menu size={21} strokeWidth={1.8} />
 									)}
 								</button>
-								<p className="mb-1 text-sm font-medium text-indigo-600">
-									React Dictionary
-								</p>
-								<div className='hidden lg:block'>
 
+								<div className="ml-3 min-w-0">
+									<p className="truncate text-sm font-semibold text-slate-900">
+										React Dictionary
+									</p>
+									<p className="truncate text-xs text-slate-500">
+										English → Русский
+									</p>
+								</div>
+							</div>
+
+							<div className="hidden lg:block">
+								<div className="mb-6">
+									<p className="mb-1 text-sm font-medium text-indigo-600">
+										React Dictionary
+									</p>
 
 									<h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
 										React English Dictionary
@@ -164,7 +183,7 @@ function App() {
 								</div>
 							</div>
 						</header>
-						<section>
+						<section className='mt-12 lg:mt-0'>
 
 							<CategoryArea
 								category={selectedCategoryData}
@@ -205,7 +224,7 @@ function App() {
 						</section>
 					</div>
 
-					{isVisibleButtonUp && (
+					{showScrollToTop && (
 						<button
 							type='button'
 							className='fixed 
