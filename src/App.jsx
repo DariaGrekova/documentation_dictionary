@@ -7,6 +7,8 @@ import {
 	ArrowUp
 } from 'lucide-react';
 import Sidebar from './components/Sidebar/Sidebar';
+import AlphabetFilter from './components/AlphabetFilter/AlphabetFilter';
+import SortFilter from './components/AlphabetFilter/SortFilter';
 import CategoryArea from './components/CategoryArea/CategoryArea';
 import WordGrid from './components/WordGrid/WordGrid';
 import WordModal from './components/WordModal/WordModal';
@@ -16,12 +18,17 @@ function App() {
 	const [visibleBatches, setVisibleBatches] = useState({ all: 1 });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	/* фильтры */
 	const [selectedCategory, setSelectedCategory] = useState('all');
+	const [selectedLetter, setSelectedLetter] = useState('all');
+	const [sortType, setSortType] = useState('default');
+
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleSidebar = () => setIsOpen(prev => !prev);
 	const [selectedWord, setSelectedWord] = useState(null);
 	const WORDS_PER_BATCH = 6;
 	const [showScrollToTop, setShowScrollToTop] = useState(false);
+
 
 	const getWords = async () => {
 		const response = await fetch(
@@ -67,6 +74,13 @@ function App() {
 
 	const handleCategorySelect = (category) => {
 		setSelectedCategory(category);
+
+		setSelectedLetter('all');
+		setVisibleBatches(prev => ({
+			...prev,
+			[category]: 1
+		}));
+
 		setIsOpen(false);
 
 		window.scrollTo(0, 0);
@@ -85,16 +99,46 @@ function App() {
 		});
 	};
 
-	const filteredWords = words.filter(
+	const handleLetterSelect = (letter) => {
+		setSelectedLetter(letter);
+
+		setVisibleBatches(prev => ({
+			...prev,
+			[selectedCategory]: 1
+		}));
+
+		window.scrollTo(0, 0);
+	};
+
+	const categoryWords = words.filter(
 		(word) =>
 			selectedCategory === 'all' ||
 			word.category === selectedCategory
 	);
 
-	const currentBatch = visibleBatches[selectedCategory] || 1;
-	const displayedWords = filteredWords.slice(0, WORDS_PER_BATCH * currentBatch);
+	const filteredWords = categoryWords.filter(
+		(word) =>
+			selectedLetter === 'all' ||
+			word.word[0].toUpperCase() === selectedLetter
+	);
 
-	const hasMoreWords = filteredWords.length > displayedWords.length;
+	const sortedWords = [...filteredWords].sort((a, b) => {
+		if (sortType === 'asc') {
+			return a.word.localeCompare(b.word);
+		}
+
+		if (sortType === 'desc') {
+			return b.word.localeCompare(a.word);
+		}
+
+		return 0;
+	})
+
+	const currentBatch = visibleBatches[selectedCategory] || 1;
+
+	const displayedWords = sortedWords.slice(0, WORDS_PER_BATCH * currentBatch);
+
+	const hasMoreWords = sortedWords.length > displayedWords.length;
 
 	const selectedCategoryData = categories.find(
 		(category) => category.id === selectedCategory
@@ -185,9 +229,21 @@ function App() {
 						</header>
 						<section className='mt-12 lg:mt-0'>
 
+							<AlphabetFilter
+								selectedLetter={selectedLetter}
+								onLetterSelect={handleLetterSelect}
+							/>
+
+							<SortFilter
+								sortType={sortType}
+								onSortChange={setSortType}
+							/>
+
 							<CategoryArea
 								category={selectedCategoryData}
-								wordsCount={filteredWords.length} />
+								wordsCount={filteredWords.length}
+							/>
+
 
 							{error ? (
 								<div className="mt-8 rounded-xl border border-red-200 bg-red-50 p-6 text-center">
