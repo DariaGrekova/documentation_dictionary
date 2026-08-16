@@ -35,6 +35,9 @@ body {
 
 button {
 	font: inherit;
+}
+
+button:not(:disabled) {
 	cursor: pointer;
 }
 

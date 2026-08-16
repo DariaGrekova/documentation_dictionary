@@ -122,6 +122,10 @@ function App() {
 			word.word[0].toUpperCase() === selectedLetter
 	);
 
+	const availableLetters = new Set(
+		categoryWords.map(word => word.word[0].toUpperCase())
+	);
+
 	const sortedWords = [...filteredWords].sort((a, b) => {
 		if (sortType === 'asc') {
 			return a.word.localeCompare(b.word);
@@ -232,6 +236,7 @@ function App() {
 							<AlphabetFilter
 								selectedLetter={selectedLetter}
 								onLetterSelect={handleLetterSelect}
+								availableLetters={availableLetters}
 							/>
 
 							<SortFilter

@@ -23,27 +23,49 @@ const alphabet = [
 	'V',
 ];
 
-function AlphabetFilter({ selectedLetter, onLetterSelect }) {
+
+function AlphabetFilter({ selectedLetter, onLetterSelect, availableLetters }) {
 	return (
 		<div className="mb-2 flex gap-1.5 max-w-[90vw] overflow-x-auto pb-3">
-			{alphabet.map((letter) => (
-				<button
-					key={letter}
-					onClick={() => {
-						onLetterSelect(letter);
-						console.log(letter)
-					}}
-					type="button"
-					className={[
-						'flex h-9 min-w-9 shrink-0 items-center justify-center rounded-lg px-2 text-xs font-medium transition-colors',
-						selectedLetter === letter
-							? 'bg-indigo-600 text-white shadow-sm'
-							: 'text-slate-500 hover:bg-white hover:text-slate-900',
-					].join(' ')}
-				>
-					{letter === 'all' ? 'Все' : letter}
-				</button>
-			))}
+			{alphabet.map((letter) => {
+				if (letter !== 'all' && !availableLetters.has(letter)) {
+					return (
+						<button
+							key={letter}
+							type="button"
+							disabled
+							className="
+									flex h-9 min-w-9 shrink-0
+									items-center justify-center
+									rounded-lg px-2
+									text-xs font-medium
+									text-slate-500/30
+									cursor-not-allowed"
+						>
+							{letter}
+						</button>
+
+					)
+				}
+
+				return (
+					<button
+						key={letter}
+						onClick={() => {
+							onLetterSelect(letter);
+						}}
+						type="button"
+						className={[
+							'flex h-9 min-w-9 shrink-0 items-center justify-center rounded-lg px-2 text-xs font-medium transition-colors',
+							selectedLetter === letter
+								? 'bg-indigo-600 text-white shadow-sm'
+								: 'text-slate-500 hover:bg-white hover:text-slate-900',
+						].join(' ')}
+					>
+						{letter === 'all' ? 'Все' : letter}
+					</button>
+				)
+			})}
 		</div>
 	);
 }
