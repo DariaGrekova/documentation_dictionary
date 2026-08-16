@@ -17,7 +17,7 @@ function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClo
 
 	return (
 		<>
-			<aside className={`fixed top-0 left-0 z-40 h-full w-[260px] lg:w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out
+			<aside className={`fixed top-0 left-0 z-40 h-full max-w-[85vw] lg:w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out
 				${isOpen ? 'translate-x-0' : '-translate-x-full'}
           lg:translate-x-0 lg:shadow-none
         `}>
