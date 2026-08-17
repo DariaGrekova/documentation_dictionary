@@ -1,4 +1,5 @@
 import './App.css';
+import { dictionaries } from './data/dictionaries';
 import { categories } from './data/categories';
 import { useState, useEffect } from 'react';
 import {
@@ -12,12 +13,16 @@ import SortFilter from './components/AlphabetFilter/SortFilter';
 import CategoryArea from './components/CategoryArea/CategoryArea';
 import WordGrid from './components/WordGrid/WordGrid';
 import WordModal from './components/WordModal/WordModal';
+import CategorySelect from './components/CategorySelect/CategorySelect';
 
 function App() {
 	const [words, setWords] = useState([]);
 	const [visibleBatches, setVisibleBatches] = useState({ all: 1 });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	/* меню */
+	const [selectedDictionary, setSelectedDictionary] = useState('react');
+
 	/* фильтры */
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [selectedLetter, setSelectedLetter] = useState('all');
@@ -32,7 +37,7 @@ function App() {
 
 	const getWords = async () => {
 		const response = await fetch(
-			'https://raw.githubusercontent.com/DariaGrekova/remote_data/refs/heads/main/dictonary/words.json'
+			'https://raw.githubusercontent.com/DariaGrekova/remote_data/refs/heads/main/dictionary/words.json'
 		);
 
 		if (!response.ok) {
@@ -72,19 +77,41 @@ function App() {
 		}
 	}, []);
 
-	const handleCategorySelect = (category) => {
-		setSelectedCategory(category);
+	const dictionaryWords = words.filter(
+		(word) => word.section === selectedDictionary
+	);
 
+	const handleDictionarySelect = (dictionary) => {
+		setSelectedDictionary(dictionary);
+
+		setSelectedCategory('all');
 		setSelectedLetter('all');
+		setSortType('default');
+
 		setVisibleBatches(prev => ({
 			...prev,
-			[category]: 1
+			[dictionary]: 1
 		}));
 
 		setIsOpen(false);
 
 		window.scrollTo(0, 0);
-	};
+	}
+
+
+	/*	const handleCategorySelect = (category) => {
+			setSelectedCategory(category);
+	
+			setSelectedLetter('all');
+			setVisibleBatches(prev => ({
+				...prev,
+				[category]: 1
+			}));
+	
+			setIsOpen(false);
+	
+			window.scrollTo(0, 0);
+		}; */
 
 	const handleRetry = () => {
 		setError(null);
@@ -110,7 +137,7 @@ function App() {
 		window.scrollTo(0, 0);
 	};
 
-	const categoryWords = words.filter(
+	const categoryWords = dictionaryWords.filter(
 		(word) =>
 			selectedCategory === 'all' ||
 			word.category === selectedCategory
@@ -159,9 +186,9 @@ function App() {
 		<div className="min-h-screen bg-slate-50 text-slate-900">
 			<div className="flex min-h-screen">
 				<Sidebar
-					categories={categories}
-					selectedCategory={selectedCategory}
-					onCategorySelect={handleCategorySelect}
+					dictionaries={dictionaries}
+					selectedDictionary={selectedDictionary}
+					onDictionarySelect={handleDictionarySelect}
 					onClose={toggleSidebar}
 					isOpen={isOpen}
 				/>
@@ -239,10 +266,14 @@ function App() {
 								availableLetters={availableLetters}
 							/>
 
+							<CategorySelect
+								sortType={sortType}
+								onSortChange={setSortType} />
 							<SortFilter
 								sortType={sortType}
 								onSortChange={setSortType}
 							/>
+
 
 							<CategoryArea
 								category={selectedCategoryData}

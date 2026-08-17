@@ -1,7 +1,7 @@
 import SidebarItem from './SidebarItem';
 import { useEffect } from 'react';
 
-function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClose }) {
+function Sidebar({ dictionaries, selectedDictionary, onDictionarySelect, isOpen, onClose }) {
 
 	useEffect(() => {
 		if (!isOpen) return;
@@ -25,12 +25,12 @@ function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClo
 					<div className="hidden border-b border-slate-200 px-5 py-5 lg:flex">
 						<div className="flex items-center gap-3">
 							<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white lg:flex">
-								&lt;/&gt;
+								L/C
 							</div>
 
 							<div>
 								<p className="font-semibold text-slate-900">
-									React Words
+									LexiCode
 								</p>
 
 								<p className="text-xs text-slate-500">
@@ -42,18 +42,18 @@ function Sidebar({ categories, selectedCategory, onCategorySelect, isOpen, onClo
 
 					<nav className="sidebar-scroll flex-1 overflow-y-auto px-3 py-5 mt-16 lg:mt-0">
 						<p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-							Categories
+							Разделы
 						</p>
 
 						<div className="space-y-1">
-							{categories.map((category) => (
+							{dictionaries.map((dictionary) => (
 								<SidebarItem
-									key={category.id}
-									label={category.label}
-									icon={category.icon}
-									active={selectedCategory === category.id}
+									key={dictionary.id}
+									label={dictionary.label}
+									icon={dictionary.icon}
+									active={selectedDictionary === dictionary.id}
 									onClick={() => {
-										onCategorySelect(category.id);
+										onDictionarySelect(dictionary.id);
 									}}
 								/>
 							))}
