@@ -1,6 +1,5 @@
 import './App.css';
 import { dictionaries } from './data/dictionaries';
-import { categories } from './data/categories';
 import { useState, useEffect } from 'react';
 import {
 	Menu,
@@ -88,30 +87,25 @@ function App() {
 		setSelectedLetter('all');
 		setSortType('default');
 
-		setVisibleBatches(prev => ({
-			...prev,
-			[dictionary]: 1
-		}));
-
 		setIsOpen(false);
 
 		window.scrollTo(0, 0);
 	}
 
 
-	/*	const handleCategorySelect = (category) => {
-			setSelectedCategory(category);
-	
-			setSelectedLetter('all');
-			setVisibleBatches(prev => ({
-				...prev,
-				[category]: 1
-			}));
-	
-			setIsOpen(false);
-	
-			window.scrollTo(0, 0);
-		}; */
+	const handleCategorySelect = (category) => {
+		setSelectedCategory(category);
+
+		setSelectedLetter('all');
+		setVisibleBatches(prev => ({
+			...prev,
+			[`${selectedDictionary}-${category}`]: 1
+		}));
+
+		setIsOpen(false);
+
+		window.scrollTo(0, 0);
+	};
 
 	const handleRetry = () => {
 		setError(null);
@@ -131,7 +125,7 @@ function App() {
 
 		setVisibleBatches(prev => ({
 			...prev,
-			[selectedCategory]: 1
+			[`${selectedDictionary}-${selectedCategory}`]: 1
 		}));
 
 		window.scrollTo(0, 0);
@@ -165,20 +159,33 @@ function App() {
 		return 0;
 	})
 
-	const currentBatch = visibleBatches[selectedCategory] || 1;
+	/* составной ключ для корректной работы Infinite Scroll */
+	const batchKey = `${selectedDictionary}-${selectedCategory}`;
+	const currentBatch = visibleBatches[batchKey] || 1;
 
 	const displayedWords = sortedWords.slice(0, WORDS_PER_BATCH * currentBatch);
 
 	const hasMoreWords = sortedWords.length > displayedWords.length;
 
-	const selectedCategoryData = categories.find(
-		(category) => category.id === selectedCategory
+	/* выбор раздела */
+	const selectedDictionaryData = dictionaries.find(
+		dictionary => dictionary.id === selectedDictionary
 	);
+
+	/* выбор категории */
+	const categories = selectedDictionaryData?.categories ?? [];
+
+	const selectedCategoryData =
+		selectedCategory === 'all'
+			? { id: 'all', label: 'Все слова' }
+			: categories.find(
+				(category) => category.id === selectedCategory
+			);
 
 	const handleAddMore = () => {
 		setVisibleBatches(prev => ({
 			...prev,
-			[selectedCategory]: (prev[selectedCategory] || 1) + 1
+			[batchKey]: (prev[batchKey] || 1) + 1
 		}));
 	};
 
@@ -265,15 +272,18 @@ function App() {
 								onLetterSelect={handleLetterSelect}
 								availableLetters={availableLetters}
 							/>
+							<div className="mb-5 grid grid-cols-[1fr_1fr_auto] gap-3">
+								<CategorySelect
+									categories={categories}
+									selectedCategory={selectedCategory}
+									onCategorySelect={handleCategorySelect}
+								/>
 
-							<CategorySelect
-								sortType={sortType}
-								onSortChange={setSortType} />
-							<SortFilter
-								sortType={sortType}
-								onSortChange={setSortType}
-							/>
-
+								<SortFilter
+									sortType={sortType}
+									onSortChange={setSortType}
+								/>
+							</div>
 
 							<CategoryArea
 								category={selectedCategoryData}
