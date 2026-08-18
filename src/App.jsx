@@ -1,6 +1,7 @@
 import './App.css';
 import { dictionaries } from './data/dictionaries';
 import { useState, useEffect } from 'react';
+import lexicodeLogoUrl from './assets/lexicode-logo.svg?url';
 import {
 	Menu,
 	X,
@@ -206,7 +207,7 @@ function App() {
 							<div
 								className="
 									fixed inset-x-0 top-0 z-50
-									flex h-14 items-center 
+									flex h-14 items-center justify-between
 									border-b border-slate-200/80
 									bg-white/90
 									px-4
@@ -215,10 +216,11 @@ function App() {
 									lg:hidden
 								"
 							>
-								<button
-									onClick={toggleSidebar}
-									type="button"
-									className="
+								<div className='flex'>
+									<button
+										onClick={toggleSidebar}
+										type="button"
+										className="
 										flex h-9 w-9 shrink-0
 										items-center justify-center
 										rounded-lg
@@ -229,23 +231,25 @@ function App() {
 										focus:ring-2
 										focus:ring-indigo-500/30
 									"
-									aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
-								>
-									{isOpen ? (
-										<X size={21} strokeWidth={1.8} />
-									) : (
-										<Menu size={21} strokeWidth={1.8} />
-									)}
-								</button>
+										aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
+									>
+										{isOpen ? (
+											<X size={21} strokeWidth={1.8} />
+										) : (
+											<Menu size={21} strokeWidth={1.8} />
+										)}
+									</button>
 
-								<div className="ml-3 min-w-0">
-									<p className="truncate text-sm font-semibold text-slate-900">
-										{selectedDictionaryData?.label || selectedDictionary} Dictionary
-									</p>
-									<p className="truncate text-xs text-slate-500">
-										English → Русский
-									</p>
+									<div className="ml-3 min-w-0">
+										<p className="truncate text-sm font-semibold text-slate-900">
+											{selectedDictionaryData?.label || selectedDictionary} Dictionary
+										</p>
+										<p className="truncate text-xs text-slate-500">
+											English → Русский
+										</p>
+									</div>
 								</div>
+								<img src={lexicodeLogoUrl} alt="LexiCode" className='w-auto h-full' />
 							</div>
 
 							<div className="hidden lg:block">
