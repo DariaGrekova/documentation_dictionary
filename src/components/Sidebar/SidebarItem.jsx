@@ -18,6 +18,7 @@ function SidebarItem({
 		>
 			<Icon
 				size={16}
+				height={16}
 				strokeWidth={1.8}
 				className={['flex-shrink-0 transition-colors mt-[5px]',
 					active ? 'text-indigo-600' : 'text-slate-400'].join(' ')}
