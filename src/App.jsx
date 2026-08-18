@@ -240,7 +240,7 @@ function App() {
 
 								<div className="ml-3 min-w-0">
 									<p className="truncate text-sm font-semibold text-slate-900">
-										React Dictionary
+										{selectedDictionaryData?.label || selectedDictionary} Dictionary
 									</p>
 									<p className="truncate text-xs text-slate-500">
 										English → Русский
@@ -250,16 +250,12 @@ function App() {
 
 							<div className="hidden lg:block">
 								<div className="mb-6">
-									<p className="mb-1 text-sm font-medium text-indigo-600">
-										React Dictionary
-									</p>
-
-									<h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-										React English Dictionary
+									<h1 className="mb-1 text-sm font-medium text-indigo-600">
+										{selectedDictionaryData?.label || selectedDictionary} Dictionary
 									</h1>
 
 									<p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-										Англо-русский словарь для изучения React и чтения технической
+										Англо-русский словарь для изучения {selectedDictionaryData?.label || selectedDictionary} и чтения технической
 										документации.
 									</p>
 								</div>
