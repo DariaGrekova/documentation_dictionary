@@ -1,70 +1,31 @@
-const alphabet = [
-	'all',
-	'A',
-	'B',
-	'C',
-	'D',
-	'E',
-	'F',
-	'G',
-	'H',
-	'I',
-	'J',
-	'K',
-	'L',
-	'M',
-	'N',
-	'O',
-	'P',
-	'R',
-	'S',
-	'T',
-	'U',
-	'V',
-];
-
+const FULL_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const alphabet = ['all', ...FULL_ALPHABET];
 
 function AlphabetFilter({ selectedLetter, onLetterSelect, availableLetters }) {
 	return (
-		<div className="mb-2 flex gap-1.5 max-w-[90vw] overflow-x-auto pb-3">
+		<div className="mb-2 flex gap-1.5 overflow-x-auto pb-3 max-w-[90vw]">
 			{alphabet.map((letter) => {
-				if (letter !== 'all' && !availableLetters.has(letter)) {
-					return (
-						<button
-							key={letter}
-							type="button"
-							disabled
-							className="
-									flex h-9 min-w-9 shrink-0
-									items-center justify-center
-									rounded-lg px-2
-									text-xs font-medium
-									text-slate-500/30
-									cursor-not-allowed"
-						>
-							{letter}
-						</button>
-
-					)
-				}
+				const isAll = letter === 'all';
+				const isAvailable = isAll || availableLetters.has(letter);
 
 				return (
 					<button
 						key={letter}
-						onClick={() => {
-							onLetterSelect(letter);
-						}}
 						type="button"
+						onClick={() => isAvailable && onLetterSelect(letter)}
+						disabled={!isAvailable}
 						className={[
 							'flex h-9 min-w-9 shrink-0 items-center justify-center rounded-lg px-2 text-xs font-medium transition-colors',
 							selectedLetter === letter
 								? 'bg-indigo-600 text-white shadow-sm'
-								: 'text-slate-500 hover:bg-white hover:text-slate-900',
+								: isAvailable
+									? 'text-slate-500 hover:bg-white hover:text-slate-900'
+									: 'text-slate-500/30 cursor-not-allowed',
 						].join(' ')}
 					>
-						{letter === 'all' ? 'Все' : letter}
+						{isAll ? 'Все' : letter}
 					</button>
-				)
+				);
 			})}
 		</div>
 	);

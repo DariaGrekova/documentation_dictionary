@@ -1,17 +1,19 @@
+
+
 import {
-	ArrowDownAZ,
-	ChevronDown
+	ListFilter,
+	ChevronDown,
 } from 'lucide-react';
 
-function SortFilter({ sortType, onSortChange }) {
+const CategorySelect = ({ categories, selectedCategory, onCategorySelect }) => {
 	return (
 		<div className="relative mb-3 w-full">
 			<div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-				<ArrowDownAZ size={18} />
+				<ListFilter size={18} />
 			</div>
 			<select
-				value={sortType}
-				onChange={(event) => onSortChange(event.target.value)}
+				value={selectedCategory}
+				onChange={(event) => onCategorySelect(event.target.value)}
 				className="
           h-12 w-full appearance-none rounded-xl
 					border border-slate-200
@@ -27,17 +29,24 @@ function SortFilter({ sortType, onSortChange }) {
 					cursor-pointer
         "
 			>
-				<option value="default">По умолчанию</option>
-				<option value="asc">A → Z</option>
-				<option value="desc">Z → A</option>
+				<option value="all">Все категории</option>
+
+				{categories.map((category) => {
+					return (
+						<option key={category.id} value={category.id}>{category.label}</option>
+
+					)
+				})}
 			</select>
 
 
 			<div className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
 				<ChevronDown size={18} />
 			</div>
-		</div>
-	);
-}
 
-export default SortFilter;
+		</div>
+
+	);
+};
+
+export default CategorySelect;

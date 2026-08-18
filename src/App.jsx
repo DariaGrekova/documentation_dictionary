@@ -1,5 +1,5 @@
 import './App.css';
-import { categories } from './data/categories';
+import { dictionaries } from './data/dictionaries';
 import { useState, useEffect } from 'react';
 import {
 	Menu,
@@ -12,12 +12,16 @@ import SortFilter from './components/AlphabetFilter/SortFilter';
 import CategoryArea from './components/CategoryArea/CategoryArea';
 import WordGrid from './components/WordGrid/WordGrid';
 import WordModal from './components/WordModal/WordModal';
+import CategorySelect from './components/CategorySelect/CategorySelect';
 
 function App() {
 	const [words, setWords] = useState([]);
 	const [visibleBatches, setVisibleBatches] = useState({ all: 1 });
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	/* меню */
+	const [selectedDictionary, setSelectedDictionary] = useState('react');
+
 	/* фильтры */
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [selectedLetter, setSelectedLetter] = useState('all');
@@ -32,7 +36,7 @@ function App() {
 
 	const getWords = async () => {
 		const response = await fetch(
-			'https://raw.githubusercontent.com/DariaGrekova/remote_data/refs/heads/main/dictonary/words.json'
+			'https://raw.githubusercontent.com/DariaGrekova/remote_data/refs/heads/main/dictionary/words.json'
 		);
 
 		if (!response.ok) {
@@ -72,13 +76,30 @@ function App() {
 		}
 	}, []);
 
+	const dictionaryWords = words.filter(
+		(word) => word.section === selectedDictionary
+	);
+
+	const handleDictionarySelect = (dictionary) => {
+		setSelectedDictionary(dictionary);
+
+		setSelectedCategory('all');
+		setSelectedLetter('all');
+		setSortType('default');
+
+		setIsOpen(false);
+
+		window.scrollTo(0, 0);
+	}
+
+
 	const handleCategorySelect = (category) => {
 		setSelectedCategory(category);
 
 		setSelectedLetter('all');
 		setVisibleBatches(prev => ({
 			...prev,
-			[category]: 1
+			[`${selectedDictionary}-${category}`]: 1
 		}));
 
 		setIsOpen(false);
@@ -104,13 +125,13 @@ function App() {
 
 		setVisibleBatches(prev => ({
 			...prev,
-			[selectedCategory]: 1
+			[`${selectedDictionary}-${selectedCategory}`]: 1
 		}));
 
 		window.scrollTo(0, 0);
 	};
 
-	const categoryWords = words.filter(
+	const categoryWords = dictionaryWords.filter(
 		(word) =>
 			selectedCategory === 'all' ||
 			word.category === selectedCategory
@@ -138,20 +159,33 @@ function App() {
 		return 0;
 	})
 
-	const currentBatch = visibleBatches[selectedCategory] || 1;
+	/* составной ключ для корректной работы Infinite Scroll */
+	const batchKey = `${selectedDictionary}-${selectedCategory}`;
+	const currentBatch = visibleBatches[batchKey] || 1;
 
 	const displayedWords = sortedWords.slice(0, WORDS_PER_BATCH * currentBatch);
 
 	const hasMoreWords = sortedWords.length > displayedWords.length;
 
-	const selectedCategoryData = categories.find(
-		(category) => category.id === selectedCategory
+	/* выбор раздела */
+	const selectedDictionaryData = dictionaries.find(
+		dictionary => dictionary.id === selectedDictionary
 	);
+
+	/* выбор категории */
+	const categories = selectedDictionaryData?.categories ?? [];
+
+	const selectedCategoryData =
+		selectedCategory === 'all'
+			? { id: 'all', label: 'Все слова' }
+			: categories.find(
+				(category) => category.id === selectedCategory
+			);
 
 	const handleAddMore = () => {
 		setVisibleBatches(prev => ({
 			...prev,
-			[selectedCategory]: (prev[selectedCategory] || 1) + 1
+			[batchKey]: (prev[batchKey] || 1) + 1
 		}));
 	};
 
@@ -159,9 +193,9 @@ function App() {
 		<div className="min-h-screen bg-slate-50 text-slate-900">
 			<div className="flex min-h-screen">
 				<Sidebar
-					categories={categories}
-					selectedCategory={selectedCategory}
-					onCategorySelect={handleCategorySelect}
+					dictionaries={dictionaries}
+					selectedDictionary={selectedDictionary}
+					onDictionarySelect={handleDictionarySelect}
 					onClose={toggleSidebar}
 					isOpen={isOpen}
 				/>
@@ -206,7 +240,7 @@ function App() {
 
 								<div className="ml-3 min-w-0">
 									<p className="truncate text-sm font-semibold text-slate-900">
-										React Dictionary
+										{selectedDictionaryData?.label || selectedDictionary} Dictionary
 									</p>
 									<p className="truncate text-xs text-slate-500">
 										English → Русский
@@ -216,16 +250,12 @@ function App() {
 
 							<div className="hidden lg:block">
 								<div className="mb-6">
-									<p className="mb-1 text-sm font-medium text-indigo-600">
-										React Dictionary
-									</p>
-
-									<h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-										React English Dictionary
+									<h1 className="mb-1 text-sm font-medium text-indigo-600">
+										{selectedDictionaryData?.label || selectedDictionary} Dictionary
 									</h1>
 
 									<p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-										Англо-русский словарь для изучения React и чтения технической
+										Англо-русский словарь для изучения {selectedDictionaryData?.label || selectedDictionary} и чтения технической
 										документации.
 									</p>
 								</div>
@@ -238,11 +268,18 @@ function App() {
 								onLetterSelect={handleLetterSelect}
 								availableLetters={availableLetters}
 							/>
+							<div className="mb-5 grid grid-cols-[1fr_1fr_auto] gap-3">
+								<CategorySelect
+									categories={categories}
+									selectedCategory={selectedCategory}
+									onCategorySelect={handleCategorySelect}
+								/>
 
-							<SortFilter
-								sortType={sortType}
-								onSortChange={setSortType}
-							/>
+								<SortFilter
+									sortType={sortType}
+									onSortChange={setSortType}
+								/>
+							</div>
 
 							<CategoryArea
 								category={selectedCategoryData}

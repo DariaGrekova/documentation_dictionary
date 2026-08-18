@@ -78,6 +78,16 @@ export const categories = [
 		id: 'modal',
 		label: 'Оценочные и модальные слова',
 		icon: Blocks,
+	},
+	{
+		id: 'basic-types',
+		label: 'Базовые типы',
+		icon: Wrench,
+	},
+	{
+		id: 'everyday-types',
+		label: 'Часто используемые типы',
+		icon: Wrench,
 	}
 ];
 
