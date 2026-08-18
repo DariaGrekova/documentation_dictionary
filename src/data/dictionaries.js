@@ -1,10 +1,11 @@
-import { Braces, Code2 } from 'lucide-react';
+import ReactLogo from '../assets/react.svg?react';
+import TypeScriptLogo from '../assets/typescript.svg?react';
 
 export const dictionaries = [
 	{
 		id: 'react',
 		label: 'React',
-		icon: Braces,
+		icon: ReactLogo,
 		categories: [
 			{ id: 'basics', label: 'Базовые понятия' },
 			{ id: 'state', label: 'Состояние и данные' },
@@ -23,7 +24,7 @@ export const dictionaries = [
 	{
 		id: 'typescript',
 		label: 'TypeScript',
-		icon: Code2,
+		icon: TypeScriptLogo,
 		categories: [
 			{ id: 'basic-types', label: 'Базовые типы' },
 			{ id: 'everyday-types', label: 'Часто используемые типы' },
