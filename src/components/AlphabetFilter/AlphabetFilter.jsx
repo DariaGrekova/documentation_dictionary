@@ -3,7 +3,7 @@ const alphabet = ['all', ...FULL_ALPHABET];
 
 function AlphabetFilter({ selectedLetter, onLetterSelect, availableLetters }) {
 	return (
-		<div className="mb-2 flex gap-1.5 overflow-x-auto pb-3 max-w-[90vw]">
+		<div className="custom-scroll mb-2 flex gap-1.5 overflow-x-auto pb-3 max-w-[90vw]">
 			{alphabet.map((letter) => {
 				const isAll = letter === 'all';
 				const isAvailable = isAll || availableLetters.has(letter);

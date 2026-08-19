@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">LexiCode logo</title>
+  <desc id="desc">An open book combining language and coding symbols, with the LexiCode wordmark.</desc>
+
+  <defs>
+    <linearGradient id="halo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="55%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#C026D3"/>
+    </linearGradient>
+
+    <linearGradient id="code" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+
+    <linearGradient id="page" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F4F1EA"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-opacity=".18"/>
+    </filter>
+
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <!-- Soft halo -->
+  <circle cx="400" cy="270" r="205" fill="url(#halo)" opacity=".16" filter="url(#soft)"/>
+  <circle cx="400" cy="270" r="175" fill="url(#halo)" opacity=".92"/>
+
+  <!-- Decorative sparkle -->
+  <path d="M205 185 C211 202 218 209 235 215 C218 221 211 228 205 245 C199 228 192 221 175 215 C192 209 199 202 205 185Z"
+        fill="#fff"/>
+
+  <!-- Chat bubble -->
+  <path d="M505 122
+           C505 96 527 76 554 76
+           H645
+           C672 76 694 96 694 122
+           V159
+           C694 185 672 205 645 205
+           H585
+           L555 229
+           L559 205
+           H554
+           C527 205 505 185 505 159Z"
+        fill="#fff" opacity=".96" filter="url(#shadow)"/>
+  <circle cx="557" cy="141" r="10" fill="#3B82F6"/>
+  <circle cx="600" cy="141" r="10" fill="#6366F1"/>
+  <circle cx="643" cy="141" r="10" fill="#7C3AED"/>
+
+  <!-- Book shadow/back cover -->
+  <path d="M176 251
+           C176 231 192 216 212 216
+           H380
+           C392 216 400 222 400 232
+           C400 222 408 216 420 216
+           H588
+           C608 216 624 231 624 251
+           V430
+           C624 451 607 467 586 467
+           H423
+           C411 467 404 473 400 484
+           C396 473 389 467 377 467
+           H214
+           C193 467 176 451 176 430Z"
+        fill="#17366F" filter="url(#shadow)"/>
+
+  <!-- Left page -->
+  <path d="M202 238
+           C202 221 216 209 233 211
+           L375 229
+           C390 231 400 243 400 258
+           V447
+           C393 434 384 428 369 427
+           L226 414
+           C212 413 202 401 202 387Z"
+        fill="url(#page)" filter="url(#shadow)"/>
+
+  <!-- Right page -->
+  <path d="M598 238
+           C598 221 584 209 567 211
+           L425 229
+           C410 231 400 243 400 258
+           V447
+           C407 434 416 428 431 427
+           L574 414
+           C588 413 598 401 598 387Z"
+        fill="url(#page)" filter="url(#shadow)"/>
+
+  <!-- Book center -->
+  <path d="M400 258 V447" stroke="#D9D6CF" stroke-width="4" opacity=".8"/>
+
+  <!-- A / language side -->
+  <text x="300" y="332"
+        text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="112"
+        font-weight="700"
+        fill="#17366F">A</text>
+
+  <path d="M246 365 Q300 348 354 365" fill="none" stroke="#D8D2E2" stroke-width="8" stroke-linecap="round"/>
+  <path d="M252 388 Q300 374 348 388" fill="none" stroke="#D8D2E2" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Code side -->
+  <path d="M474 319 L438 353 L474 387"
+        fill="none" stroke="#2563EB" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M526 319 L562 353 L526 387"
+        fill="none" stroke="#7C3AED" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M508 305 L492 401"
+        stroke="#A855F7" stroke-width="15" stroke-linecap="round"/>
+
+  <!-- Bookmark -->
+  <path d="M450 428 H500 V515 L475 493 L450 515Z"
+        fill="url(#code)" filter="url(#shadow)"/>
+
+  <!-- Wordmark -->
+  <text x="400" y="622"
+        text-anchor="middle"
+        font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="104"
+        font-weight="800"
+        letter-spacing="-5">
+    <tspan fill="#172554">Lexi</tspan><tspan fill="url(#code)">Code</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <line x1="102" y1="660" x2="176" y2="660" stroke="#6366F1" stroke-width="3"/>
+  <text x="400" y="667"
+        text-anchor="middle"
+        font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+        font-size="18"
+        font-weight="500"
+        letter-spacing="6"
+        fill="#334155">WORDS • MEANINGS • CONNECTIONS</text>
+  <line x1="624" y1="660" x2="698" y2="660" stroke="#6366F1" stroke-width="3"/>
+</svg>

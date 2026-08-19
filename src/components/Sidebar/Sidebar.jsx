@@ -1,5 +1,8 @@
 import SidebarItem from './SidebarItem';
 import { useEffect } from 'react';
+import lexicodeLogoUrl from '../../assets/lexicode-logo.svg?url';
+
+
 
 function Sidebar({ dictionaries, selectedDictionary, onDictionarySelect, isOpen, onClose }) {
 
@@ -24,8 +27,8 @@ function Sidebar({ dictionaries, selectedDictionary, onDictionarySelect, isOpen,
 				<div className="flex h-screen flex-col">
 					<div className="hidden border-b border-slate-200 px-5 py-5 lg:flex">
 						<div className="flex items-center gap-3">
-							<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white lg:flex">
-								L/C
+							<div className="flex h-15 w-15 items-center justify-center rounded-lg bg-indigo-100 text-white lg:flex">
+								<img src={lexicodeLogoUrl} alt="LexiCode" />
 							</div>
 
 							<div>
@@ -40,7 +43,7 @@ function Sidebar({ dictionaries, selectedDictionary, onDictionarySelect, isOpen,
 						</div>
 					</div>
 
-					<nav className="sidebar-scroll flex-1 overflow-y-auto px-3 py-5 mt-16 lg:mt-0">
+					<nav className="custom-scroll flex-1 overflow-y-auto px-3 py-5 mt-16 lg:mt-0">
 						<p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
 							Разделы
 						</p>

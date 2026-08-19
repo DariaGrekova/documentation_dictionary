@@ -1,0 +1,280 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 800 800"
+  role="img"
+  aria-labelledby="title"
+>
+  <title id="title">LexiCode logo</title>
+
+  <defs>
+    <!-- Main gradient -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="55%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
+
+    <!-- Code gradient -->
+    <linearGradient id="codeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+
+    <!-- Page gradient -->
+    <linearGradient id="pageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F4F1EA"/>
+    </linearGradient>
+
+    <!-- Shadow -->
+    <filter
+      id="shadow"
+      x="-30%"
+      y="-30%"
+      width="160%"
+      height="170%"
+    >
+      <feDropShadow
+        dx="0"
+        dy="12"
+        stdDeviation="14"
+        flood-color="#172554"
+        flood-opacity="0.18"
+      />
+    </filter>
+
+    <!-- Soft glow -->
+    <filter
+      id="glow"
+      x="-40%"
+      y="-40%"
+      width="180%"
+      height="180%"
+    >
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <!-- ========================= -->
+  <!-- BACKGROUND / HALO -->
+  <!-- ========================= -->
+
+  <circle
+    cx="400"
+    cy="275"
+    r="215"
+    fill="url(#mainGradient)"
+    opacity="0.16"
+    filter="url(#glow)"
+  />
+
+  <circle
+    cx="400"
+    cy="275"
+    r="180"
+    fill="url(#mainGradient)"
+  />
+
+  <!-- ========================= -->
+  <!-- DECORATIVE SPARKLE -->
+  <!-- ========================= -->
+
+  <path
+    d="M210 178
+       C216 195 223 202 240 208
+       C223 214 216 221 210 238
+       C204 221 197 214 180 208
+       C197 202 204 195 210 178Z"
+    fill="#FFFFFF"
+  />
+
+  <!-- ========================= -->
+  <!-- CHAT BUBBLE -->
+  <!-- ========================= -->
+
+  <path
+    d="
+      M515 118
+      C515 91 537 72 564 72
+      H646
+      C673 72 695 91 695 118
+      V155
+      C695 182 673 201 646 201
+      H589
+      L558 226
+      L562 201
+      H564
+      C537 201 515 182 515 155
+      Z
+    "
+    fill="#FFFFFF"
+    filter="url(#shadow)"
+  />
+
+  <circle cx="560" cy="138" r="10" fill="#2563EB"/>
+  <circle cx="603" cy="138" r="10" fill="#6366F1"/>
+  <circle cx="646" cy="138" r="10" fill="#7C3AED"/>
+
+  <!-- ========================= -->
+  <!-- BOOK BACK COVER -->
+  <!-- ========================= -->
+
+  <path
+    d="
+      M174 252
+      C174 231 190 215 211 215
+      H379
+      C391 215 399 222 400 233
+      C401 222 409 215 421 215
+      H589
+      C610 215 626 231 626 252
+      V431
+      C626 452 609 468 588 468
+      H423
+      C412 468 404 475 400 486
+      C396 475 388 468 377 468
+      H212
+      C191 468 174 452 174 431
+      Z
+    "
+    fill="#17366F"
+    filter="url(#shadow)"
+  />
+
+  <!-- ========================= -->
+  <!-- LEFT PAGE -->
+  <!-- ========================= -->
+
+  <path
+    d="
+      M201 238
+      C201 221 215 209 232 211
+      L375 229
+      C390 231 400 243 400 258
+      V447
+      C392 434 383 428 368 427
+      L225 414
+      C211 413 201 401 201 387
+      Z
+    "
+    fill="url(#pageGradient)"
+  />
+
+  <!-- ========================= -->
+  <!-- RIGHT PAGE -->
+  <!-- ========================= -->
+
+  <path
+    d="
+      M599 238
+      C599 221 585 209 568 211
+      L425 229
+      C410 231 400 243 400 258
+      V447
+      C408 434 417 428 432 427
+      L575 414
+      C589 413 599 401 599 387
+      Z
+    "
+    fill="url(#pageGradient)"
+  />
+
+  <!-- ========================= -->
+  <!-- BOOK CENTER -->
+  <!-- ========================= -->
+
+  <path
+    d="M400 258 V447"
+    stroke="#D8D5CF"
+    stroke-width="4"
+    opacity="0.85"
+  />
+
+  <!-- ========================= -->
+  <!-- LETTER A -->
+  <!-- ========================= -->
+
+  <text
+    x="300"
+    y="333"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="112"
+    font-weight="700"
+    fill="#17366F"
+  >
+    A
+  </text>
+
+  <path
+    d="M246 365 Q300 348 354 365"
+    fill="none"
+    stroke="#D8D2E2"
+    stroke-width="8"
+    stroke-linecap="round"
+  />
+
+  <path
+    d="M252 388 Q300 374 348 388"
+    fill="none"
+    stroke="#D8D2E2"
+    stroke-width="7"
+    stroke-linecap="round"
+  />
+
+  <!-- ========================= -->
+  <!-- CODE SYMBOL -->
+  <!-- ========================= -->
+
+  <path
+    d="M474 319 L438 353 L474 387"
+    fill="none"
+    stroke="#2563EB"
+    stroke-width="15"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <path
+    d="M526 319 L562 353 L526 387"
+    fill="none"
+    stroke="#7C3AED"
+    stroke-width="15"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <path
+    d="M508 305 L492 401"
+    stroke="#A855F7"
+    stroke-width="15"
+    stroke-linecap="round"
+  />
+
+  <!-- ========================= -->
+  <!-- BOOKMARK -->
+  <!-- ========================= -->
+
+  <path
+    d="M450 428 H500 V515 L475 493 L450 515 Z"
+    fill="url(#codeGradient)"
+    filter="url(#shadow)"
+  />
+
+  <!-- ========================= -->
+  <!-- LEXICODE WORDMARK -->
+  <!-- ========================= -->
+
+  <text
+    x="400"
+    y="622"
+    text-anchor="middle"
+    font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="104"
+    font-weight="800"
+    letter-spacing="-5"
+  >
+    <tspan fill="#172554">Lexi</tspan>
+    <tspan fill="url(#codeGradient)">Code</tspan>
+  </text>
+</svg>
