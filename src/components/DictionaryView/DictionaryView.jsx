@@ -1,4 +1,3 @@
-import { useState } from 'react';
 
 /* иконки */
 import lexicodeLogoUrl from './assets/lexicode-logo.svg?url';
@@ -17,6 +16,10 @@ import WordModal from '../WordModal/WordModal';
 import CategorySelect from '../CategorySelect/CategorySelect';
 
 function DictionaryView({
+	toggleSidebar,
+	isOpen,
+	showScrollToTop,
+	pageUp,
 	selectedDictionaryData,
 	selectedDictionary,
 	selectedLetter,

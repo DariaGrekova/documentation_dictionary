@@ -196,6 +196,11 @@ function App() {
 			</div>
 
 			<DictionaryView
+				toggleSidebar={toggleSidebar}
+				isOpen={isOpen}
+				showScrollToTop={showScrollToTop}
+				pageUp={pageUp}
+
 				selectedDictionaryData={selectedDictionaryData}
 				selectedDictionary={selectedDictionary}
 
