@@ -1,6 +1,9 @@
 
+import { useState, useRef, useEffect } from 'react';
+import { dictionaries } from '../../data/dictionaries';
+
 /* иконки */
-import lexicodeLogoUrl from './assets/lexicode-logo.svg?url';
+import lexicodeLogoUrl from '../../assets/lexicode-logo.svg?url';
 import {
 	Menu,
 	X,
@@ -16,32 +19,148 @@ import WordModal from '../WordModal/WordModal';
 import CategorySelect from '../CategorySelect/CategorySelect';
 
 function DictionaryView({
-	toggleSidebar,
-	isOpen,
-	showScrollToTop,
-	pageUp,
-	selectedDictionaryData,
-	selectedDictionary,
-	selectedLetter,
-	handleLetterSelect,
-	availableLetters,
-	categories,
-	selectedCategory,
-	handleCategorySelect,
-	sortType,
-	setSortType,
-	selectedCategoryData,
-	filteredWords,
+	words,
 	error,
 	loading,
 	handleRetry,
-	displayedWords,
-	hasMoreWords,
-	handleAddMore,
-	selectedWord,
-	setSelectedWord
+	selectedDictionary,
+	toggleSidebar,
+	isOpen
 }) {
+
+	const WORDS_PER_BATCH = 6;
+
 	/* стейты */
+	const [selectedCategory, setSelectedCategory] = useState('all');
+	const [selectedWord, setSelectedWord] = useState(null);
+	const [selectedLetter, setSelectedLetter] = useState('all');
+	const [sortType, setSortType] = useState('default');
+	const [visibleBatches, setVisibleBatches] = useState({ all: 1 });
+	const [showScrollToTop, setShowScrollToTop] = useState(false);
+
+	/* сброс всех фильтров если словарь изменился */
+	const prevDictionaryRef = useRef(selectedDictionary);
+
+	useEffect(() => {
+		if (prevDictionaryRef.current !== selectedDictionary) {
+			setSelectedCategory('all');
+			setSelectedLetter('all');
+			setSortType('default');
+			setVisibleBatches({ all: 1 });
+			prevDictionaryRef.current = selectedDictionary;
+		}
+	}, [selectedDictionary]);
+
+	/* получаем категории для текущего раздела словаря */
+	const selectedDictionaryData = dictionaries.find(
+		dictionary => dictionary.id === selectedDictionary
+	);
+
+	const categories = selectedDictionaryData?.categories ?? [];
+
+	/* фильтрация слов */
+	const dictionaryWords = words.filter(
+		(word) => word.section === selectedDictionary
+	);
+
+	const categoryWords = dictionaryWords.filter(
+		(word) =>
+			selectedCategory === 'all' ||
+			word.category === selectedCategory
+	);
+
+	const filteredWords = categoryWords.filter(
+		(word) =>
+			selectedLetter === 'all' ||
+			word.word[0].toUpperCase() === selectedLetter
+	);
+
+	const availableLetters = new Set(
+		categoryWords.map(word => word.word[0].toUpperCase())
+	);
+
+	/* сортировка слов */
+	const sortedWords = [...filteredWords].sort((a, b) => {
+		if (sortType === 'asc') {
+			return a.word.localeCompare(b.word);
+		}
+
+		if (sortType === 'desc') {
+			return b.word.localeCompare(a.word);
+		}
+
+		return 0;
+	})
+
+	/* infinite scroll пагинация */
+	const batchKey = `${selectedDictionary}-${selectedCategory}`;
+	const currentBatch = visibleBatches[batchKey] || 1;
+
+	const displayedWords = sortedWords.slice(0, WORDS_PER_BATCH * currentBatch);
+
+	const hasMoreWords = sortedWords.length > displayedWords.length;
+
+	const handleAddMore = () => {
+		setVisibleBatches(prev => ({
+			...prev,
+			[batchKey]: (prev[batchKey] || 1) + 1
+		}));
+	};
+
+	/* обработчик выбора категории */
+	const handleCategorySelect = (category) => {
+		setSelectedCategory(category);
+
+		setSelectedLetter('all');
+		setVisibleBatches(prev => ({
+			...prev,
+			[`${selectedDictionary}-${category}`]: 1
+		}));
+
+		if (isOpen) {
+			toggleSidebar();
+		};
+
+		window.scrollTo(0, 0);
+	};
+
+	/* обработчик выбора буквы */
+	const handleLetterSelect = (letter) => {
+		setSelectedLetter(letter);
+
+		setVisibleBatches(prev => ({
+			...prev,
+			[`${selectedDictionary}-${selectedCategory}`]: 1
+		}));
+
+		window.scrollTo(0, 0);
+	};
+
+	/* infinite scroll скролл для кнопки «Наверх»*/
+	const pageUp = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
+	};
+
+	useEffect(() => {
+		const handleScroll = () => {
+			setShowScrollToTop(window.scrollY > 400)
+		};
+
+		window.addEventListener('scroll', handleScroll)
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		}
+	}, []);
+
+	/* данные для заголовка категории */
+	const selectedCategoryData =
+		selectedCategory === 'all'
+			? { id: 'all', label: 'Все слова' }
+			: categories.find(category => category.id === selectedCategory) ?? { id: 'all', label: 'Все слова' };
 
 	return (
 		<main className="min-w-0 flex-1 lg:ml-64">
