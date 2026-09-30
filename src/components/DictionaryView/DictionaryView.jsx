@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { dictionaries } from '../../data/dictionaries';
 
 /* иконки */
@@ -59,38 +59,37 @@ function DictionaryView({
 	const categories = selectedDictionaryData?.categories ?? [];
 
 	/* фильтрация слов */
-	const dictionaryWords = words.filter(
-		(word) => word.section === selectedDictionary
+	const dictionaryWords = useMemo(
+		() => words.filter(word => word.section === selectedDictionary),
+		[words, selectedDictionary]
 	);
 
-	const categoryWords = dictionaryWords.filter(
-		(word) =>
-			selectedCategory === 'all' ||
-			word.category === selectedCategory
+
+	const categoryWords = useMemo(
+		() => dictionaryWords.filter(word => selectedCategory === 'all' || word.category === selectedCategory),
+		[dictionaryWords, selectedCategory]
 	);
 
-	const filteredWords = categoryWords.filter(
-		(word) =>
-			selectedLetter === 'all' ||
-			word.word[0].toUpperCase() === selectedLetter
+	const filteredWords = useMemo(
+		() => categoryWords.filter(word => selectedLetter === 'all' || word.word[0].toUpperCase() === selectedLetter),
+		[categoryWords, selectedLetter]
 	);
 
-	const availableLetters = new Set(
-		categoryWords.map(word => word.word[0].toUpperCase())
+	const availableLetters = useMemo(
+		() => new Set(categoryWords.map(word => word.word[0].toUpperCase())),
+		[categoryWords]
 	);
 
 	/* сортировка слов */
-	const sortedWords = [...filteredWords].sort((a, b) => {
-		if (sortType === 'asc') {
-			return a.word.localeCompare(b.word);
-		}
+	const sortedWords = useMemo(
+		() => [...filteredWords].sort((a, b) => {
+			if (sortType === 'asc') return a.word.localeCompare(b.word);
+			if (sortType === 'desc') return b.word.localeCompare(a.word);
+			return 0;
+		}),
+		[filteredWords, sortType]
 
-		if (sortType === 'desc') {
-			return b.word.localeCompare(a.word);
-		}
-
-		return 0;
-	})
+	);
 
 	/* infinite scroll пагинация */
 	const batchKey = `${selectedDictionary}-${selectedCategory}`;
