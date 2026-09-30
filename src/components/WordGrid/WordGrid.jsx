@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo, useMemo } from 'react';
 import WordCard from '../WordCard/WordCard';
 
 function WordGrid({ words, categories, onWordClick, hasMoreWords, handleAddMore }) {
@@ -26,8 +26,9 @@ function WordGrid({ words, categories, onWordClick, hasMoreWords, handleAddMore 
 		return () => observer.disconnect();
 	}, [hasMoreWords, handleAddMore]);
 
-	const categoriesById = Object.fromEntries(
-		categories.map((category) => [category.id, category])
+	const categoriesById = useMemo(
+		() => Object.fromEntries(categories.map((category) => [category.id, category])),
+		[categories]
 	);
 
 	return (
@@ -59,4 +60,4 @@ function WordGrid({ words, categories, onWordClick, hasMoreWords, handleAddMore 
 	);
 }
 
-export default WordGrid;
+export default memo(WordGrid);

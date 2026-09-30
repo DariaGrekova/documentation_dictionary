@@ -1,5 +1,5 @@
 
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { dictionaries } from '../../data/dictionaries';
 
 /* иконки */
@@ -95,16 +95,21 @@ function DictionaryView({
 	const batchKey = `${selectedDictionary}-${selectedCategory}`;
 	const currentBatch = visibleBatches[batchKey] || 1;
 
-	const displayedWords = sortedWords.slice(0, WORDS_PER_BATCH * currentBatch);
+	const displayedWords = useMemo(
+		() => sortedWords.slice(0, WORDS_PER_BATCH * currentBatch),
+		[sortedWords, currentBatch]
+	);
 
 	const hasMoreWords = sortedWords.length > displayedWords.length;
 
-	const handleAddMore = () => {
-		setVisibleBatches(prev => ({
-			...prev,
-			[batchKey]: (prev[batchKey] || 1) + 1
-		}));
-	};
+	const handleAddMore = useCallback(
+		() => {
+			setVisibleBatches(prev => ({
+				...prev,
+				[batchKey]: (prev[batchKey] || 1) + 1
+			}));
+		}, [batchKey]
+	);
 
 	/* обработчик выбора категории */
 	const handleCategorySelect = (category) => {
@@ -145,7 +150,8 @@ function DictionaryView({
 
 	useEffect(() => {
 		const handleScroll = () => {
-			setShowScrollToTop(window.scrollY > 400)
+			const shouldShow = window.scrollY > 400;
+			setShowScrollToTop(prev => prev === shouldShow ? prev : shouldShow);
 		};
 
 		window.addEventListener('scroll', handleScroll)
@@ -160,6 +166,10 @@ function DictionaryView({
 		selectedCategory === 'all'
 			? { id: 'all', label: 'Все слова' }
 			: categories.find(category => category.id === selectedCategory) ?? { id: 'all', label: 'Все слова' };
+
+	const handleWordClick = useCallback((word) => {
+		setSelectedWord(word);
+	}, []);
 
 	return (
 		<main className="min-w-0 flex-1 lg:ml-64">
@@ -272,7 +282,7 @@ function DictionaryView({
 						<WordGrid
 							words={displayedWords}
 							categories={categories}
-							onWordClick={(word) => setSelectedWord(word)}
+							onWordClick={handleWordClick}
 							hasMoreWords={hasMoreWords}
 							handleAddMore={handleAddMore}
 						/>
